@@ -63,17 +63,23 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 
 void solve()
 {
-    int n,h,m;
-    cin >> n >> h <<< m;
-    priority_queue<pair<int,int>>pq;
-    fr(i,n)
+    int k, s;
+    cin >> k >> s;
+    int ans=0;
+    fr(i,k+1)
     {
-        int h1,m1;
-        cin >> h1 >> m1;
-        pq.insert({h1,m1});
+        if(i>s)
+            break;
+        fr(j,k+1)
+        {
+            if(j>s)
+                break;
+            int x=s-i-j;
+            if(x>=0 && x<=k)
+                ans++;
+        }
     }
-    cout << pq.top().ff << " " << pq.top().ss;
-    nl;
+    cout << ans;
 }
 
 int32_t main()
@@ -83,7 +89,7 @@ int32_t main()
     cin.tie(NULL);
 
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while (T--)
     {
         solve();
