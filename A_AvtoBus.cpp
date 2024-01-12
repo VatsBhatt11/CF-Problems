@@ -39,34 +39,18 @@ template<typename typC,typename typD> ostream &operator<<(ostream &cout,const ve
 template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a) { int n=a.size(); if (!n) return cout; cout<<a[0]; for (int i=1; i<n; i++) cout<<' '<<a[i]; return cout; }
 // ===================================END Of the input module ==========================================
 
-#include <iostream>
-#include <vector>
-
-using namespace std;
 
 void solve(){
     int n;
     cin>>n;
-    vi v(n);
-    cin>>v;
-    int ans=0;
-    int a=INT_MAX,b=a;
-    fr(i,n)
-    {
-        if(a>b)
-            swap(a,b);
-        if(v[i]<=a)
-            a=v[i];
-        else if(v[i]<=b)
-            b=v[i];
-        else
-        {
-            a=v[i];
-            ans++;
-        }
-    }
-    cout << ans;
-    nl;
+    if(n%4!=0 && n%6!=0)
+        cout << "-1\n";
+    else if(n%12==0)
+        cout << n/6 << " " << n/4 << "\n";
+    else if(n%6)
+        cout << n/4 << " " << n/4 << "\n";
+    else if(n%4)
+        cout << n/6 << " " << n/6 << "\n";
 }
 
 int32_t main()
