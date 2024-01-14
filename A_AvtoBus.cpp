@@ -43,14 +43,37 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 void solve(){
     int n;
     cin>>n;
-    if(n%4!=0 && n%6!=0)
+    if(n&1 || n<4)
         cout << "-1\n";
     else if(n%12==0)
         cout << n/6 << " " << n/4 << "\n";
-    else if(n%6)
-        cout << n/4 << " " << n/4 << "\n";
-    else if(n%4)
-        cout << n/6 << " " << n/6 << "\n";
+    else
+    {
+        n=n>>1;
+        int mn,mx;
+        if(n&1)
+        {
+            mx=1+((n-3)/2);
+            if(n%3==1)
+                mn=2+((n-4)/3);
+            else if(n%3==2)
+                mn=1+((n-2)/3);
+            else
+                mn=n/3;
+        }
+        else
+        {
+            mx=n>>1;
+            if(n%3==1)
+                mn=2+((n-4)/3);
+            else if(n%3==2)
+                mn=1+((n-2)/3);
+            else
+                mn=n/3;
+        }
+        cout << mn << " " << mx;
+        nl;
+    }
 }
 
 int32_t main()
