@@ -41,40 +41,37 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 
 void solve(){
-    int n;
+    int n,k;
     cin>>n;
-    vector<pair<int,int>>v;
-    int x;
+    int a,b,l=INT_MIN,h=INT_MAX;
+    vi v;
     fr(i,n)
     {
-        cin >> x;
-        v.pb({x,i});
-    }
-    sort(v.rbegin(),v.rend());
-    int p=ceil((n+1)/2),j=1,sum=0,i=1;
-    vi ans,a(n);
-    ans.pb(p);
-    for(auto it:v)
-    {
-        if(i&1)
+        cin >> a >> b;
+        if(a==1)
         {
-            a[it.ss]=p+j;
-            sum+=2*it.ff*j;
+            l=max(l,b);
+        }
+        else if(a==2)
+        {
+            h=min(h,b);
         }
         else
         {
-            a[it.ss]=p-j;
-            sum+=2*it.ff*j;
-            j++;
+            v.pb(b);
         }
-        i++;
     }
-    cout << sum << "\n";
-    for(auto it:a)
-        ans.pb(it);
-    for(auto it:ans)
-        cout << it << " ";
-    nl;
+    sort(v.begin(),v.end());
+    int ans=h-l+1;
+    for(auto it:v)
+    {
+        if(it>=l && it<=h)
+            ans--;
+    }
+    if(ans<0)
+        cout << "0\n";
+    else
+    cout << ans << "\n";
 }
 
 int32_t main()
