@@ -48,7 +48,7 @@ void solve(){
     int ans=0;
     fr(i,n)
     {
-        ans=__gcd(ans,i+1-v[i]);
+        ans=__gcd(ans,abs(i+1-v[i]));
     }
     cout << ans << "\n";
 }
