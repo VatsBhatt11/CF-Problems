@@ -69,27 +69,20 @@ void solve()
     cin >> s;
     if (!k)
         cout << "YES\n";
-    else if (n & 1)
-    {
-        string temp = s;
-        reverse(s.begin(), s.end());
-        s == temp ? cout << "YES\n" : cout << "NO\n";
-    }
+    else if (n % 2==0 && k == n / 2)
+        cout << "NO\n";
     else
     {
         bool ans = true;
-        if (k == n / 2)
-            ans = false;
-        else
+        int i=0;
+        while(k--)
         {
-            for (int i = 0; i < (n / 2) - 1; i++)
+            if (s[i] != s[n - i - 1])
             {
-                if (s[i] != s[n - i - 1])
-                {
-                    ans = false;
-                    break;
-                }
+                ans = false;
+                break;
             }
+            i++;
         }
         ans ? cout << "YES\n" : cout << "NO\n";
     }
