@@ -65,40 +65,19 @@ void solve()
 {
     int n, k, x;
     cin >> n >> k >> x;
-    vi v(n);
-    int temp=k;
-    cin >> v;
-    sort(v.begin(), v.end());
-    vi p(n), s(n);
-    p[0] = v[0], s[n - 1] = v[n - 1];
-    rep(i, 1, n - 1)
-        p[i] = v[i] + p[i - 1];
-    for (int i = n - 2; i >= 0; i--)
-        s[i] = v[i] + s[i + 1];
-    int pt1 = n - 1, pt2 = n - x;
-    int sum = s[pt2], ans;
-    if(k==n)
-        ans=0;
-    else
+    vi v(n + 1);
+    for (int i = 1; i <= n; i++)
+        cin >> v[i];
+    sort(v.begin() + 1, v.end(), greater<int>());
+    for (int i = 1; i <= n; i++)
+        v[i] += v[i - 1];
+    int ans = INT_MIN;
+    fr(i, k + 1)
     {
-        ans=p[n-k-1];
-        if(n-k-x<0)
-            ans=-1LL*ans;
-        else
-            ans-=s[n-k]+s[n-k+x];
+        ans = max(ans, v[n] - 2 * v[min(i + x, n)] + v[i]);
     }
-    int z=0;
-    while (pt2 && z<k)
-    {
-        ans=max(ans,p[pt2-1]-sum);
-        sum = s[pt2 - 1]-s[pt2-1+x];
-        pt2--;
-        z++;
-    }
-    if(n==temp && ans<0)
-        ans=0;
-    cout << ans << "\n";
-
+    cout << ans;
+    nl;
 }
 
 int32_t main()
