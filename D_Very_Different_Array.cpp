@@ -68,34 +68,12 @@ void solve()
     vi a(n), b(m);
     cin >> a;
     cin >> b;
-    int sum1 = 0,sum2=0;
     sort(a.begin(), a.end());
-    sort(b.rbegin(), b.rend());
-    int j = 0, k = m - 1,w=n-1;
+    sort(b.begin(), b.end());
+    int ans = 0;
     fr(i, n)
-    {
-        if (i & 1)
-        {
-            sum1 += abs(a[w--] - b[k--]);
-        }
-        else
-        {
-            sum1 += abs(a[j] - b[j++]);
-        }
-    }
-    j = 0, k = m - 1,w=n-1;
-    fr(i, n)
-    {
-        if (i & 1)
-        {
-            sum2 += abs(a[j] - b[j++]);
-        }
-        else
-        {
-            sum2 += abs(a[w--] - b[k--]);
-        }
-    }
-    cout << max(sum1,sum2);
+        ans += max(abs(a[i] - b[n - i - 1]), abs(a[i] - b[m - i - 1]));
+    cout << ans;
     nl;
 }
 
