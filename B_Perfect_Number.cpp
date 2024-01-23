@@ -61,11 +61,30 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 }
 // ===================================END Of the input module ==========================================
 
+int calc(int n)
+{
+    int ans = 0;
+    while (n)
+    {
+        ans += n % 10;
+        n = n / 10;
+    }
+    return ans;
+}
+
 void solve()
 {
     int n;
     cin >> n;
-    cout << 10 + (9 * n);
+    int ans = 18;
+    while (n)
+    {
+        ans++;
+        if (calc(ans) == 10)
+            n--;
+    }
+    cout << ans;
+    nl;
 }
 
 int32_t main()
