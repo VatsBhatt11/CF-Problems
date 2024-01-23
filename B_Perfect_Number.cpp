@@ -63,39 +63,9 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 
 void solve()
 {
-    int n, q, x;
-    cin >> n >> q;
-    vi v(n);
-    cin >> v;
-    set<int> s(all(v));
-    int sum = accumulate(all(v), 0);
-    int z;
-    while (q--)
-    {
-        cin >> x;
-        if (x == 1)
-        {
-            int i, y;
-            cin >> i >> y;
-            if(s.count(y))
-                sum -= v[i - 1];
-            else
-                sum -= z;
-            v[i - 1] = y;
-            s.insert(y);
-            sum += y;
-        }
-        else
-        {
-            int y;
-            cin >> y;
-            z = y;
-            sum = n * y;
-            s.clear();
-        }
-        cout << sum;
-        nl;
-    }
+    int n;
+    cin >> n;
+    cout << 10 + (9 * n);
 }
 
 int32_t main()

@@ -63,38 +63,53 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 
 void solve()
 {
-    int n, q, x;
-    cin >> n >> q;
+    int n;
+    cin >> n;
     vi v(n);
     cin >> v;
-    set<int> s(all(v));
-    int sum = accumulate(all(v), 0);
-    int z;
-    while (q--)
+    vector<pair<int, pair<int, int>>> ans;
+    int p = -1, ind = -1;
+    for (int i = n - 1; i >= 0; i--)
     {
-        cin >> x;
-        if (x == 1)
+        if (v[i] > 0)
         {
-            int i, y;
-            cin >> i >> y;
-            if(s.count(y))
-                sum -= v[i - 1];
-            else
-                sum -= z;
-            v[i - 1] = y;
-            s.insert(y);
-            sum += y;
+            p = v[i];
+            ind = i + 1;
+            break;
+        }
+    }
+    if (v[n - 2] > v[n - 1])
+        cout << "-1\n";
+    else
+    {
+        bool flag = true;
+        for (int i = 0; i < n - 2; i++)
+        {
+            if (v[i] > v[i + 1])
+            {
+                if (p == -1)
+                {
+                    flag = false;
+                    break;
+                }
+                if (i - ind <= -3)
+                    ans.pb({i + 1, {i + 2, ind}});
+                else
+                {
+                    flag = false;
+                    break;
+                }
+                v[i] = v[i + 1] - p;
+            }
+        }
+        if (flag)
+        {
+            cout << ans.size() << "\n";
+            for (auto it : ans)
+                cout << it << "\n";
         }
         else
-        {
-            int y;
-            cin >> y;
-            z = y;
-            sum = n * y;
-            s.clear();
-        }
-        cout << sum;
-        nl;
+            cout << "-1\n";
     }
 }
 
@@ -105,7 +120,7 @@ int32_t main()
     cin.tie(NULL);
 
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--)
     {
         solve();

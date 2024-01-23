@@ -2,6 +2,7 @@
     "files.associations": {
         "*.ejs": "html",
         "numeric": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "bitset": "cpp"
     }
 }

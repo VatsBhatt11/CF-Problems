@@ -63,39 +63,25 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 
 void solve()
 {
-    int n, q, x;
-    cin >> n >> q;
+    int n, a, b;
+    cin >> n >> a >> b;
     vi v(n);
     cin >> v;
-    set<int> s(all(v));
-    int sum = accumulate(all(v), 0);
-    int z;
-    while (q--)
+    srt(v);
+    int ans = 0;
+    fr(i, n)
     {
-        cin >> x;
-        if (x == 1)
+        int rem1 = a - v[i], rem2 = b - v[i];
+        int i1 = lower_bound(all(v), rem1) - v.begin();
+        int i2 = upper_bound(all(v), rem2) - v.begin() - 1;
+        i1 = max(i1, i + 1);
+        if (i1 >= 0 && i2 >= 0 && i1 < n && i2 < n && i2 != i)
         {
-            int i, y;
-            cin >> i >> y;
-            if(s.count(y))
-                sum -= v[i - 1];
-            else
-                sum -= z;
-            v[i - 1] = y;
-            s.insert(y);
-            sum += y;
+            ans += max(1LL * 0, i2 - i1 + 1);
         }
-        else
-        {
-            int y;
-            cin >> y;
-            z = y;
-            sum = n * y;
-            s.clear();
-        }
-        cout << sum;
-        nl;
     }
+    cout << ans;
+    nl;
 }
 
 int32_t main()
@@ -105,7 +91,7 @@ int32_t main()
     cin.tie(NULL);
 
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--)
     {
         solve();
