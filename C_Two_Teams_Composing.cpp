@@ -63,49 +63,19 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 
 void solve()
 {
-    int n, m;
+    int n;
     cin >> n;
     vi v(n);
     cin >> v;
+    int mx = INT_MIN;
     unordered_map<int, int> f;
-    int cnt, mx = INT_MIN;
     for (auto it : v)
     {
         f[it]++;
         mx = max(mx, f[it]);
     }
-    cnt = f.size();
-    vi a;
-    for (auto &it : f)
-        a.pb(it.second);
-    m = a.size();
-    int l = 0, r = n / 2;
-    srt(a);
-    int ans = 0, mid;
-    while (l <= r)
-    {
-        mid = l + (r - l) / 2;
-        int ind = upper_bound(all(a), mid) - a.begin() - 1;
-        if (ind < 0 || ind > m)
-            r = mid - 1;
-        else
-        {
-            if ((a[ind] >= ans) && (cnt - 1 >= ans))
-            {
-                ans = mid;
-                l = ans + 1;
-            }
-            else if ((cnt == ans) && (a[ind] > ans))
-            {
-                ans = mid;
-                l = ans + 1;
-            }
-            else
-            {
-                r = mid - 1;
-            }
-        }
-    }
+    int m = f.size();
+    int ans = max(min(m - 1, mx), min(mx - 1, m));
     cout << ans;
     nl;
 }
