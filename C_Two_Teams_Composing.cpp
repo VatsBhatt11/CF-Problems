@@ -64,22 +64,50 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 void solve()
 {
     int n, m;
-    cin >> n >> m;
-    vi a(n);
-    cin >> a;
-    rep(i, 1, n - 1)
-        a[i] += a[i - 1];
-    int x;
-    while (m--)
+    cin >> n;
+    vi v(n);
+    cin >> v;
+    unordered_map<int, int> f;
+    int cnt, mx = INT_MIN;
+    for (auto it : v)
     {
-        cin >> x;
-        int ind = lower_bound(all(a), x) - a.begin();
-        if (ind)
-            cout << ind + 1 << " " << x - a[ind - 1];
-        else
-            cout << "1 " << x;
-        nl;
+        f[it]++;
+        mx = max(mx, f[it]);
     }
+    cnt = f.size();
+    vi a;
+    for (auto &it : f)
+        a.pb(it.second);
+    m = a.size();
+    int l = 0, r = n / 2;
+    srt(a);
+    int ans = 0, mid;
+    while (l <= r)
+    {
+        mid = l + (r - l) / 2;
+        int ind = upper_bound(all(a), mid) - a.begin() - 1;
+        if (ind < 0 || ind > m)
+            r = mid - 1;
+        else
+        {
+            if ((a[ind] >= ans) && (cnt - 1 >= ans))
+            {
+                ans = mid;
+                l = ans + 1;
+            }
+            else if ((cnt == ans) && (a[ind] > ans))
+            {
+                ans = mid;
+                l = ans + 1;
+            }
+            else
+            {
+                r = mid - 1;
+            }
+        }
+    }
+    cout << ans;
+    nl;
 }
 
 int32_t main()
@@ -89,7 +117,7 @@ int32_t main()
     cin.tie(NULL);
 
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--)
     {
         solve();

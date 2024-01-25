@@ -3,6 +3,8 @@
         "*.ejs": "html",
         "numeric": "cpp",
         "iostream": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "string_view": "cpp",
+        "stacktrace": "cpp"
     }
 }

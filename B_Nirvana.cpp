@@ -61,25 +61,45 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 }
 // ===================================END Of the input module ==========================================
 
+int calc(string s)
+{
+    int p = 1;
+    for (auto it : s)
+        p *= it - '0';
+    return p;
+}
+
+int helper(string s)
+{
+    int m = s.size(), ans = pow(9, (m - 1));
+    if ((s[0] - '1') > 1)
+        ans *= s[0] - '1';
+    return ans;
+}
+
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vi a(n);
-    cin >> a;
-    rep(i, 1, n - 1)
-        a[i] += a[i - 1];
-    int x;
-    while (m--)
+    int n;
+    cin >> n;
+    string s = to_string(n);
+    int m = s.size();
+    int ans = helper(s);
+    string temp = "";
+    int p = 1;
+    for (int i = s.size() - 1; i >= 0; i--)
     {
-        cin >> x;
-        int ind = lower_bound(all(a), x) - a.begin();
-        if (ind)
-            cout << ind + 1 << " " << x - a[ind - 1];
-        else
-            cout << "1 " << x;
-        nl;
+        temp = s[i] + temp;
+        if (s[i] != '0')
+        {
+            int x = stoi(temp);
+            if (x % 10 == 0)
+                x--;
+            temp = to_string(x);
+            p *= max(calc(temp), helper(temp));
+            temp = "";
+        }
     }
+    cout << max(p, max(ans, calc(s)));
 }
 
 int32_t main()
