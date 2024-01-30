@@ -63,57 +63,78 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 }
 // ===================================END Of the input module ==========================================
 
-// ========================================MATH UTIL BEGINS==============================================
-//==================================== compute higher powers with mod ===================================
-uint power(int x, int y, int p = MOD)
+const int SZ = 1e5 + 1;
+int numFactors[SZ]; // the number of primes which are a divisor of i.
+int minPrime[SZ];   // the minimum prime which is a divisor of i
+vector<int> primes;
+void precomp()
 {
-    unsigned long long res = 1;
-
-    x = x % p;
-    while (y > 0)
+    memset(numFactors, 0, sizeof numFactors);
+    memset(minPrime, -1, sizeof minPrime);
+    minPrime[1] = 1;
+    for (int i = 2; i < SZ; i++)
     {
-
-        if (y & 1)
-            res = (res * x) % p;
-
-        y = y >> 1;
-        x = (x * x) % p;
+        if (minPrime[i] == -1)
+        {
+            primes.push_back(i);
+            for (int j = i; j < SZ; j += i)
+            {
+                minPrime[j] = i;
+            }
+        }
     }
-    return res;
+    for (int i = 2; i < SZ; i++)
+    {
+        int div = i / minPrime[i];
+        numFactors[i] = numFactors[div] + (minPrime[div] != minPrime[i]);
+    }
 }
-
-// =============================================================================================================
-
-uint modInverse(int n, int p = MOD) // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
+bool isPrime(int n)
 {
-    return power(n, p - 2, p);
+    return minPrime[n] == n; // comment out this if not precomputed!
+    for (int i = 2; i * i <= n; i++)
+    {
+        if (n % i == 0)
+            return 0;
+    }
+    return 1;
 }
-// can also derive this using extended euclidean... however this has a much simpler code....
 
-// =========================================Used to calculate nCr of higher values ===================================
-uint nCr(int n, int r, int p = MOD) // faster calculation..
+bool valid(int n, set<int> &avail)
 {
-    if (n < r)
-        return 0;
-
-    if (r == 0)
-        return 1;
-
-    vector<int> fac(n + 1, 0);
-    fac[0] = 1;
-    for (int i = 1; i <= n; i++)
-        fac[i] = (fac[i - 1] * i) % p;
-
-    return (fac[n] * modInverse(fac[r], p) % p * modInverse(fac[n - r], p) % p) % p;
+    int div = minPrime[n];
+    while (div > 1)
+    {
+        if (!avail.count(div))
+            return 0;
+        n /= div;
+        div = minPrime[n];
+    }
+    return 1;
 }
-// ==================================== MATH UTIL ENDS=======================================================//
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    cout << power(n, m);
+    int n;
+    cin >> n;
+    vi v(n, 1);
+    int ans = 1;
+    for (int i = 2; i <= n + 1; i++)
+    {
+        if (!isPrime(i))
+            continue;
+        for (int j = i; j <= n + 1; j += i)
+        {
+            if (j != i && v[j - 2] == v[i - 2])
+            {
+                v[j - 2] = v[i - 2] + 1;
+                ans = max(ans, v[j - 2]);
+            }
+        }
+    }
+    cout << ans;
     nl;
+    cout << v;
 }
 
 int32_t main()
@@ -123,9 +144,10 @@ int32_t main()
     cin.tie(NULL);
 
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while (T--)
     {
+        precomp();
         solve();
     }
     return 0;

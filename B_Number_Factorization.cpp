@@ -63,56 +63,52 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 }
 // ===================================END Of the input module ==========================================
 
-// ========================================MATH UTIL BEGINS==============================================
-//==================================== compute higher powers with mod ===================================
-uint power(int x, int y, int p = MOD)
+void helper(int n, vector<pair<int, int>> &v)
 {
-    unsigned long long res = 1;
-
-    x = x % p;
-    while (y > 0)
+    int cnt = 0;
+    for (int i = 2; i * i <= n; i++)
     {
-
-        if (y & 1)
-            res = (res * x) % p;
-
-        y = y >> 1;
-        x = (x * x) % p;
+        while (n % i == 0)
+        {
+            cnt++;
+            n = n / i;
+        }
+        if (cnt)
+        {
+            v.pb({cnt, i});
+            cnt = 0;
+        }
     }
-    return res;
+    if (n != 1)
+        v.pb({1, n});
 }
-
-// =============================================================================================================
-
-uint modInverse(int n, int p = MOD) // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
-{
-    return power(n, p - 2, p);
-}
-// can also derive this using extended euclidean... however this has a much simpler code....
-
-// =========================================Used to calculate nCr of higher values ===================================
-uint nCr(int n, int r, int p = MOD) // faster calculation..
-{
-    if (n < r)
-        return 0;
-
-    if (r == 0)
-        return 1;
-
-    vector<int> fac(n + 1, 0);
-    fac[0] = 1;
-    for (int i = 1; i <= n; i++)
-        fac[i] = (fac[i - 1] * i) % p;
-
-    return (fac[n] * modInverse(fac[r], p) % p * modInverse(fac[n - r], p) % p) % p;
-}
-// ==================================== MATH UTIL ENDS=======================================================//
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    cout << power(n, m);
+    int n;
+    cin >> n;
+    vector<pair<int, int>> v, x;
+    helper(n, v);
+    srt(v);
+    int m = v.size();
+    int s = 1;
+    fr(i, m)
+    {
+        int c = v[i].ff, p = 1;
+        while (v[i].ff == c)
+            p *= v[i++].ss;
+        i--;
+        x.pb({c, p});
+        s *= p;
+    }
+    int ans = 0, c = 0;
+    for (auto it : x)
+    {
+        ans += s * (it.ff - c);
+        c = it.ff;
+        s /= it.ss;
+    }
+    cout << ans;
     nl;
 }
 
