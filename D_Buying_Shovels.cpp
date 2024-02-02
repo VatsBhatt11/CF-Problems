@@ -63,87 +63,23 @@ ostream &operator<<(ostream &cout, const vector<typC> &a)
 }
 // ===================================END Of the input module ==========================================
 
-const int SZ = 1e5+4;
-int numFactors[SZ]; // the number of primes which are a divisor of i.
-int minPrime[SZ];   // the minimum prime which is a divisor of i
-vector<int> primes;
-void precomp()
-{
-    memset(numFactors, 0, sizeof numFactors);
-    memset(minPrime, -1, sizeof minPrime);
-    minPrime[1] = 1;
-    for (int i = 2; i < SZ; i++)
-    {
-        if (minPrime[i] == -1)
-        {
-            primes.push_back(i);
-            for (int j = i; j < SZ; j += i)
-            {
-                minPrime[j] = i;
-            }
-        }
-    }
-    for (int i = 2; i < SZ; i++)
-    {
-        int div = i / minPrime[i];
-        numFactors[i] = numFactors[div] + (minPrime[div] != minPrime[i]);
-    }
-}
-bool isPrime(int n)
-{
-    return minPrime[n] == n; // comment out this if not precomputed!
-    for (int i = 2; i * i <= n; i++)
-    {
-        if (n % i == 0)
-            return 0;
-    }
-    return 1;
-}
-
-bool valid(int n, set<int> &avail)
-{
-    int div = minPrime[n];
-    while (div > 1)
-    {
-        if (!avail.count(div))
-            return 0;
-        n /= div;
-        div = minPrime[n];
-    }
-    return 1;
-}
-
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vvi v(n, vi(m));
-    fr(i, n)
-        cin >>v[i];
-    vvi ans(n, vi(m));
-    int mn = INT_MAX;
-    fr(i, n)
+    int n, k;
+    cin >> n >> k;
+    int ans = n;
+    for (int i = 1; i * i <= n; i++)
     {
-        int s = 0;
-        fr(j, m)
+        if (n % i == 0)
         {
-            int l = lower_bound(all(primes), v[i][j]) - primes.begin();
-            int x = INT_MAX;
-            if (l >= 0 && l < primes.size())
-                x = primes[l] - v[i][j];
-            ans[i][j] = x;
-            s += x;
+            if (i <= k)
+                ans = min(ans, n / i);
+            if ((n / i) <= k)
+                ans = min(ans, i);
         }
-        mn = min(mn, s);
     }
-    fr(j, m)
-    {
-        int s = 0;
-        fr(i, n)
-            s += ans[i][j];
-        mn = min(mn, s);
-    }
-    cout << mn;
+    cout << ans;
+    nl;
 }
 
 int32_t main()
@@ -153,10 +89,9 @@ int32_t main()
     cin.tie(NULL);
 
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--)
     {
-        precomp();
         solve();
     }
     return 0;
